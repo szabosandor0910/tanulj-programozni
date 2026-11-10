@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mit tanulhatsz nálunk? – 9–13. évfolyam</title>
+<style>
+  :root {
+    --bg: #0b1020;
+    --panel: #141b33;
+    --panel2: #1b2445;
+    --text: #e9edff;
+    --muted: #9aa6d1;
+    --line: #2a3563;
+    --c9: #ff8a3d;
+    --c10: #3ddc97;
+    --c11: #ffd23f;
+    --c12: #4da3ff;
+    --c13: #c77dff;
+    --radius: 18px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, #25306b 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 10%, #1d3b52 0%, transparent 55%),
+      var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 18px 60px; }
+
+  /* Hero */
+  header { padding: 44px 0 24px; }
+  .tag {
+    display: inline-block; font-size: 13px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--c10); border: 1px solid #1f6b4c; background: #0f2a22;
+    padding: 4px 12px; border-radius: 999px;
+  }
+  h1 { font-size: clamp(32px, 7vw, 54px); line-height: 1.08; margin: 16px 0 12px; letter-spacing: -.02em; }
+  h1 span { background: linear-gradient(90deg, var(--c9), var(--c11), var(--c10), var(--c12), var(--c13)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lead { color: var(--muted); font-size: 18px; max-width: 620px; margin: 0; }
+
+  /* Timeline nav */
+  nav.years { display: flex; gap: 8px; margin: 26px 0 8px; flex-wrap: wrap; }
+  nav.years a {
+    flex: 1 1 0; min-width: 56px; text-align: center; text-decoration: none; color: var(--text);
+    padding: 10px 0; border-radius: 12px; background: var(--panel); border: 1px solid var(--line);
+    font-weight: 700; transition: transform .15s, border-color .15s;
+  }
+  nav.years a small { display: block; font-weight: 400; font-size: 11px; color: var(--muted); }
+  nav.years a:hover { transform: translateY(-2px); }
+  nav.years a.y9:hover { border-color: var(--c9); } nav.years a.y10:hover { border-color: var(--c10); }
+  nav.years a.y11:hover { border-color: var(--c11); } nav.years a.y12:hover { border-color: var(--c12); }
+  nav.years a.y13:hover { border-color: var(--c13); }
+
+  /* Year cards */
+  section.year {
+    margin-top: 22px; background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 22px; position: relative; overflow: hidden;
+    scroll-margin-top: 14px;
+  }
+  section.year::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: var(--accent);
+  }
+  .head { display: flex; align-items: center; gap: 16px; }
+  .num {
+    font-size: 44px; font-weight: 800; line-height: 1; color: var(--accent);
+    min-width: 72px; letter-spacing: -.03em;
+  }
+  .num small { font-size: 14px; font-weight: 600; color: var(--muted); letter-spacing: 0; margin-left: 2px; }
+  h2 { margin: 0; font-size: 24px; }
+  .sub { color: var(--muted); margin: 2px 0 0; font-size: 15px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }
+  .chip {
+    font-size: 13px; padding: 4px 11px; border-radius: 999px;
+    border: 1px solid var(--line); color: var(--text); background: var(--panel2);
+  }
+  .badge-try {
+    display: inline-block; margin-top: 16px; font-size: 13px; font-weight: 700; padding: 3px 10px;
+    border-radius: 8px; background: var(--accent); color: #0b1020;
+  }
+  .y9 { --accent: var(--c9); } .y10 { --accent: var(--c10); } .y11 { --accent: var(--c11); }
+  .y12 { --accent: var(--c12); } .y13 { --accent: var(--c13); }
+
+  /* Demo boxes */
+  .demo { margin-top: 12px; display: grid; gap: 16px; grid-template-columns: 1fr; }
+  @media (min-width: 720px) { .demo { grid-template-columns: 1fr 1fr; } }
+  .box { background: #0e1429; border: 1px solid var(--line); border-radius: 14px; padding: 14px; min-width: 0; }
+  .box h3 { margin: 0 0 10px; font-size: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
+
+  /* CSS lab */
+  .stage { display: grid; place-items: center; min-height: 190px; border-radius: 10px; background: #e9edf7; padding: 22px 14px 34px; }
+  #kartya {
+    background: hsl(210 80% 55%); color: #fff; padding: 20px 22px; border-radius: 16px; font-size: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,.45); max-width: 100%; text-align: center; font-weight: 600;
+  }
+  #kartya button {
+    margin-top: 12px; border: 0; background: #fff; color: #1d2b57; padding: 8px 16px;
+    border-radius: 999px; font-weight: 700; font-size: .7em; cursor: pointer;
+  }
+  .ctrl { display: grid; grid-template-columns: 96px 1fr 44px; gap: 8px; align-items: center; margin: 10px 0 0; font-size: 14px; }
+  .ctrl output { color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+  input[type=range] { width: 100%; accent-color: var(--c9); }
+  pre.code, textarea.code {
+    margin: 0; width: 100%; background: #070b18; color: #d7e0ff; border: 1px solid var(--line);
+    border-radius: 10px; padding: 12px; font: 13.5px/1.55 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    overflow: auto; white-space: pre; tab-size: 4;
+  }
+  .kw { color: #ff7ab2; } .num2 { color: #ffd479; } .str { color: #8be9a8; } .cm { color: #6b78a8; }
+
+  /* Python lab */
+  .row { display: flex; gap: 8px; margin-bottom: 10px; }
+  .row input[type=text] {
+    flex: 1; min-width: 0; background: #070b18; color: var(--text); border: 1px solid var(--line);
+    border-radius: 10px; padding: 11px 12px; font-size: 16px;
+  }
+  .row input[type=text]:focus, textarea.code:focus { outline: 2px solid var(--c10); border-color: transparent; }
+  button.run {
+    border: 0; background: var(--c10); color: #06281b; font-weight: 800; border-radius: 10px;
+    padding: 0 18px; font-size: 16px; cursor: pointer; white-space: nowrap;
+  }
+  button.run:active { transform: scale(.97); }
+  button.run:disabled { opacity: .5; cursor: progress; }
+  textarea.code { height: 330px; resize: vertical; }
+  #rajz {
+    width: 100%; max-width: 420px; margin: 0 auto; border-radius: 10px; background: #000;
+    border: 1px solid var(--line); overflow: hidden; position: relative;
+  }
+  #rajz-in { width: 420px; height: 420px; position: relative; transform-origin: 0 0; }
+  #rajz .hint { color: var(--muted); font-size: 14px; padding: 20px; text-align: center; }
+  #hiba { color: #ff9b9b; font: 13px/1.4 ui-monospace, Menlo, Consolas, monospace; white-space: pre-wrap; margin: 10px 0 0; }
+  .tip { font-size: 14px; color: var(--muted); margin: 10px 0 0; }
+  .tip b { color: var(--text); }
+
+  /* Compact cards */
+  .desc { margin: 14px 0 0; color: #cfd7f7; }
+  ul.learn { margin: 12px 0 0; padding-left: 20px; color: #cfd7f7; }
+  ul.learn li { margin: 3px 0; }
+  .soon { margin-top: 14px; font-size: 13px; color: var(--muted); border: 1px dashed var(--line); border-radius: 10px; padding: 8px 12px; }
+
+
+  /* Fork (szakirányok) */
+  .fork-title { margin: 34px 0 0; font-size: 26px; letter-spacing: -.01em; }
+  .fork-sub { color: var(--muted); margin: 4px 0 0; }
+  .fork { display: grid; gap: 14px; grid-template-columns: 1fr; margin-top: 16px; }
+  @media (min-width: 720px) { .fork { grid-template-columns: 1fr 1fr; } }
+  .path { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
+  .path h3 { margin: 0 0 6px; font-size: 18px; }
+  .path.dev { border-color: #5a4b12; background: linear-gradient(180deg, #1c1a10, var(--panel)); }
+  .path.ops { border-color: #1f4a73; background: linear-gradient(180deg, #101c2c, var(--panel)); }
+  .path p { margin: 0; color: #cfd7f7; font-size: 15px; }
+  .path .pill { display: inline-block; font-size: 12px; padding: 2px 9px; border-radius: 999px; margin-bottom: 10px; font-weight: 700; }
+  .dev .pill { background: var(--c11); color: #1c1a10; } .ops .pill { background: var(--c12); color: #07121f; }
+  .common-note { margin-top: 14px; font-size: 14px; color: var(--muted); }
+  .route-title { margin: 30px 0 0; font-size: 15px; color: var(--c11); text-transform: uppercase; letter-spacing: .08em; font-weight: 700; }
+  .what { margin: 14px 0 0; display: grid; gap: 10px; }
+  .what div { background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; font-size: 15px; color: #d7defa; }
+  .what b { color: var(--accent); }
+  .sql-ex { margin-top: 12px; }
+  /* étterem-hasonlat */
+  .resto { display: flex; align-items: stretch; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+  .resto .node { flex: 1 1 150px; border-radius: 12px; padding: 12px; text-align: center; border: 1px solid var(--line); background: var(--panel2); font-size: 14px; color: #d7defa; }
+  .resto .node b { display: block; font-size: 16px; color: var(--accent); margin-bottom: 2px; }
+  .resto .arrow { display: grid; place-items: center; color: var(--muted); font-size: 22px; flex: 0 0 auto; }
+  @media (max-width: 560px) { .resto { flex-direction: column; } .resto .node { flex: none; } .resto .arrow { transform: none; font-size: 20px; } }
+
+  footer { margin-top: 36px; padding: 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); color: var(--muted); font-size: 15px; }
+  footer b { color: var(--text); }
+  footer .made { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="tag">Tanulj programozni</span>
+    <h1>Mit tanulhatsz <span>nálunk?</span></h1>
+    <p class="lead">Az első két évben mindenki ugyanazt tanulja, utána te döntöd el, merre mész tovább. Két dolgot ki is próbálhatsz rögtön ezen az oldalon.</p>
+    <nav class="years" aria-label="Évfolyamok">
+      <a class="y9" href="#e9">9.<small>HTML+CSS</small></a>
+      <a class="y10" href="#e10">10.<small>Python</small></a>
+      <a class="y11" href="#e11">11.<small>JS, SQL</small></a>
+      <a class="y12" href="#e12">12.<small>C#</small></a>
+      <a class="y13" href="#e13">13.<small>Frontend, backend</small></a>
+    </nav>
+  </header>
+
+  <!-- 9. -->
+  <section class="year y9" id="e9">
+    <div class="head">
+      <div class="num">9.<small>évf</small></div>
+      <div>
+        <h2>HTML és CSS</h2>
+        <p class="sub">Itt tanulod meg, hogyan épül fel egy weboldal. A HTML megmondja, mi van az oldalon (cím, kép, gomb), a CSS pedig azt, hogyan néz ki (szín, méret, elrendezés). Olyan, mint egy ház: a HTML a falak és a szobák, a CSS a festés és a berendezés.</p>
+      </div>
+    </div>
+    <span class="badge-try">Próbáld ki!</span>
+    <div class="demo">
+      <div class="box">
+        <h3>Az eredmény</h3>
+        <div class="stage">
+          <div id="kartya">Szia, én egy kártya vagyok!<br><button type="button">Kattints rám</button></div>
+        </div>
+        <div class="ctrl"><label for="s-hue">Szín</label><input id="s-hue" type="range" min="0" max="360" value="210"><output id="o-hue">210</output></div>
+        <div class="ctrl"><label for="s-rad">Lekerekítés</label><input id="s-rad" type="range" min="0" max="60" value="16"><output id="o-rad">16</output></div>
+        <div class="ctrl"><label for="s-fs">Betűméret</label><input id="s-fs" type="range" min="14" max="34" value="20"><output id="o-fs">20</output></div>
+        <div class="ctrl"><label for="s-sh">Árnyék</label><input id="s-sh" type="range" min="0" max="60" value="20"><output id="o-sh">20</output></div>
+      </div>
+      <div class="box">
+        <h3>A CSS-kód, amit írnál</h3>
+        <pre class="code" id="css-code"></pre>
+        <p class="tip">Húzd a csúszkákat: a kód <b>magától átíródik</b>. 9.-ben te írod be, és a böngésző ezt rajzolja ki.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. -->
+  <section class="year y10" id="e10">
+    <div class="head">
+      <div class="num">10.<small>évf</small></div>
+      <div>
+        <h2>Python</h2>
+        <p class="sub">Az első programozási nyelved: ezzel adsz utasításokat a számítógépnek. Nagyon olvasható, majdnem olyan, mint az angol mondat. Játékokat, rajzoló programokat és kis segédprogramokat írsz vele.</p>
+      </div>
+    </div>
+    <span class="badge-try">Próbáld ki!</span>
+    <div class="demo">
+      <div class="box">
+        <h3>1. Írd be a neved</h3>
+        <div class="row">
+          <input id="nev" type="text" value="Anna" maxlength="14" autocomplete="off" placeholder="Pl.: Bence">
+          <button class="run" id="futtat" type="button" disabled>▶ Futtatás</button>
+        </div>
+        <h3>2. Ez a Python-program rajzol belőle</h3>
+        <textarea class="code" id="py-code" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></textarea>
+        <p class="tip">Írd át a <b>szog = 47</b> számot, például 91-re vagy 120-ra, és nyomd meg újra a Futtatást.</p>
+        <pre id="hiba"></pre>
+      </div>
+      <div class="box">
+        <h3>3. A te egyedi mintád</h3>
+        <div id="rajz"><div id="rajz-in"></div></div>
+        <p class="tip">Minden betű más színt és mintát ad. Két ember neve <b>soha nem ugyanazt</b> rajzolja.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Szakirányválasztás -->
+  <h2 class="fork-title">Az alapvizsga után a saját szakmádban haladsz tovább</h2>
+  <p class="fork-sub">A szakmát már a jelentkezéskor kiválasztod. A 9–10. évfolyamon mindenki ugyanazt tanulja, utána mindenki abban a szakmában folytatja, amelyikre jelentkezett.</p>
+  <div class="fork">
+    <div class="path dev">
+      <span class="pill">Programozás</span>
+      <h3>Szoftverfejlesztő és -tesztelő</h3>
+      <p>Ha erre jelentkezel, az alapvizsga után folytatódik a programozás: weboldalak, adatbázisok, asztali alkalmazások és a háttérrendszerek. Lent láthatod, mit tanulsz 11–13. évfolyamon.</p>
+    </div>
+    <div class="path ops">
+      <span class="pill">Üzemeltetés</span>
+      <h3>Informatikai rendszer- és alkalmazás-üzemeltető technikus</h3>
+      <p>Ha erre jelentkezel, az alapvizsga után a hálózatos és üzemeltetési tárgyakkal folytatod, programozás itt már nincs. Erről a szakmáról külön mesélünk.</p>
+    </div>
+  </div>
+
+  <div class="route-title">Szoftverfejlesztő és -tesztelő · 11–13. évfolyam</div>
+
+  <!-- 11. -->
+  <section class="year y11" id="e11">
+    <div class="head">
+      <div class="num">11.<small>évf</small></div>
+      <div>
+        <h2>JavaScript és adatbázisok</h2>
+        <p class="sub">Életre kel a weboldal, és megtanulod kezelni az adatokat.</p>
+      </div>
+    </div>
+    <div class="what">
+      <div><b>JavaScript:</b> ettől lesz a weboldal élő. Ez teszi lehetővé, hogy a gomb kattintásra csináljon valamit, vagy mozogjon az animáció. A fenti csúszkák is ezzel működnek.</div>
+      <div><b>Adatbázis:</b> rendezett tároló, amiben több ezer adat elfér, például egy webshop összes terméke.</div>
+      <div><b>SQL:</b> az a nyelv, amivel az adatbázistól kérdezel, például: <i>"Mutasd az összes 10 000 Ft alatti terméket!"</i></div>
+    </div>
+    <div class="chips"><span class="chip">JavaScript</span><span class="chip">Adatbázis</span><span class="chip">SQL</span></div>
+  </section>
+
+  <!-- 12. -->
+  <section class="year y12" id="e12">
+    <div class="head">
+      <div class="num">12.<small>évf</small></div>
+      <div>
+        <h2>C# asztali alkalmazások és tesztelés</h2>
+        <p class="sub">Igazi programok, amiket a gépeden indítasz el.</p>
+      </div>
+    </div>
+    <div class="what">
+      <div><b>Asztali alkalmazás:</b> ablakos program gombokkal és listákkal, mint egy jegyzettömb vagy egy számológép. Az adatokat adatbázisba is el tudod menteni.</div>
+      <div><b>Átlátható felépítés:</b> megtanulod, hogyan építs fel egy nagyobb programot úgy, hogy mások is értsék és tudják bővíteni.</div>
+      <div><b>Tesztelés:</b> egy másik program automatikusan ellenőrzi, hogy a tiéd jól működik-e. Így a hibát te találod meg, nem a felhasználó.</div>
+    </div>
+    <div class="chips"><span class="chip">C#</span><span class="chip">Asztali alkalmazás</span><span class="chip">Tesztelés</span></div>
+  </section>
+
+  <!-- 13. -->
+  <section class="year y13" id="e13">
+    <div class="head">
+      <div class="num">13.<small>évf</small></div>
+      <div>
+        <h2>Frontend, backend és REST API</h2>
+        <p class="sub">Így épül fel egy modern weboldal vagy alkalmazás.</p>
+      </div>
+    </div>
+    <div class="what">
+      <div><b>Frontend:</b> az, amit a felhasználó lát és használ: gombok, menük, képek. Gyorsan reagáló, modern felületeket építesz, kis, újrahasználható részekből.</div>
+      <div><b>Backend:</b> a "háttérben" működő rész, amit a felhasználó nem lát. Itt tárolódnak az adatok, itt fut a belépés és a rendelés feldolgozása.</div>
+      <div><b>REST API:</b> a frontend és a backend közötti "pincér". Továbbítja a kérést, és visszahozza a választ.</div>
+    </div>
+    <div class="resto">
+      <div class="node"><b>Frontend</b>az étterem terme, ahol rendelsz</div>
+      <div class="arrow">⇄</div>
+      <div class="node"><b>REST API</b>a pincér, aki a kérést és a választ viszi</div>
+      <div class="arrow">⇄</div>
+      <div class="node"><b>Backend</b>a konyha, ahol az étel (az adat) készül</div>
+    </div>
+    <div class="chips"><span class="chip">Frontend</span><span class="chip">Backend</span><span class="chip">REST API</span><span class="chip">Saját projekt</span></div>
+  </section>
+
+  <footer>
+    <b>Ezt az oldalt is azokból építettük, amiket nálunk tanulsz:</b>
+    <div class="made">
+      <span class="chip">HTML: a váz (9. évf.)</span>
+      <span class="chip">CSS: a külső (9. évf.)</span>
+      <span class="chip">JavaScript: a működés (11. évf.)</span>
+      <span class="chip">Python: a rajzoló rész (10. évf.)</span>
+    </div>
+  </footer>
+</div>
+
+<script src="lib/skulpt.min.js"></script>
+<script src="lib/skulpt-stdlib.js"></script>
+<script>
+/* ---------- 9. évfolyam: CSS-labor ---------- */
+(function () {
+  var kartya = document.getElementById('kartya');
+  var codeEl = document.getElementById('css-code');
+  var sl = {
+    hue: document.getElementById('s-hue'), rad: document.getElementById('s-rad'),
+    fs: document.getElementById('s-fs'), sh: document.getElementById('s-sh')
+  };
+  var out = {
+    hue: document.getElementById('o-hue'), rad: document.getElementById('o-rad'),
+    fs: document.getElementById('o-fs'), sh: document.getElementById('o-sh')
+  };
+  function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  function update() {
+    var h = sl.hue.value, r = sl.rad.value, f = sl.fs.value, s = sl.sh.value;
+    kartya.style.background = 'hsl(' + h + ' 80% 55%)';
+    kartya.style.borderRadius = r + 'px';
+    kartya.style.fontSize = f + 'px';
+    kartya.style.boxShadow = '0 ' + s / 2 + 'px ' + s + 'px rgba(0,0,0,.45)';
+    for (var k in out) out[k].textContent = sl[k].value;
+    codeEl.innerHTML =
+      '<span class="kw">.kartya</span> {\n' +
+      '  background: <span class="kw">hsl</span>(<span class="num2">' + h + '</span> 80% 55%);\n' +
+      '  border-radius: <span class="num2">' + r + '</span>px;\n' +
+      '  font-size: <span class="num2">' + f + '</span>px;\n' +
+      '  box-shadow: 0 ' + (s / 2) + 'px <span class="num2">' + s + '</span>px black;\n' +
+      '}';
+  }
+  for (var k in sl) sl[k].addEventListener('input', update);
+  update();
+})();
+
+/* ---------- 10. évfolyam: Python (Skulpt) ---------- */
+(function () {
+  var nevEl = document.getElementById('nev');
+  var codeEl = document.getElementById('py-code');
+  var btn = document.getElementById('futtat');
+  var rajz = document.getElementById('rajz');
+  var rajzIn = document.getElementById('rajz-in');
+  function fit() {
+    var k = Math.min(1, rajz.clientWidth / 420);
+    rajzIn.style.transform = 'scale(' + k + ')';
+    rajz.style.height = (420 * k) + 'px';
+  }
+  window.addEventListener('resize', fit);
+  fit();
+  var hiba = document.getElementById('hiba');
+
+  var TEMPLATE =
+'import turtle\n' +
+'\n' +
+'nev = "Anna"\n' +
+'szog = 47\n' +
+'\n' +
+'t = turtle.Turtle()\n' +
+'t.hideturtle()\n' +
+'t.speed(0)\n' +
+'turtle.Screen().bgcolor("black")\n' +
+'t.pensize(2)\n' +
+'\n' +
+'for betu in nev:\n' +
+'    kod = ord(betu)\n' +
+'    r = 100 + (kod * 5) % 156\n' +
+'    g = 100 + (kod * 11) % 156\n' +
+'    b = 100 + (kod * 17) % 156\n' +
+'    t.color("#%02x%02x%02x" % (r, g, b))\n' +
+'    for i in range(40):\n' +
+'        t.forward(i * 2)\n' +
+'        t.right(szog)\n' +
+'    t.right(360 / len(nev))\n';
+
+  codeEl.value = TEMPLATE;
+
+  function safeName(v) { return v.replace(/["\\\n\r]/g, ''); }
+  function syncName() {
+    var n = safeName(nevEl.value) || 'Te';
+    codeEl.value = codeEl.value.replace(/^nev = ".*"$/m, 'nev = "' + n + '"');
+  }
+  nevEl.addEventListener('input', syncName);
+  nevEl.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); run(); } });
+  syncName();
+
+  function builtinRead(x) {
+    if (Sk.builtinFiles === undefined || Sk.builtinFiles.files[x] === undefined)
+      throw "File not found: '" + x + "'";
+    return Sk.builtinFiles.files[x];
+  }
+
+  function magyarHiba(msg) {
+    return 'Hoppá, hiba van a programban:\n' + msg +
+      '\n\nTipp: nézd meg, hogy a nev sorban az idézőjelek rendben vannak-e, és a sorok eleji behúzások egyeznek-e.';
+  }
+
+  var running = false;
+  function run() {
+    if (running || typeof Sk === 'undefined') return;
+    running = true; btn.disabled = true; hiba.textContent = '';
+    rajzIn.innerHTML = '';
+    fit();
+    Sk.pre = null;
+    Sk.configure({ output: function () {}, read: builtinRead, __future__: Sk.python3 });
+    (Sk.TurtleGraphics || (Sk.TurtleGraphics = {})).target = 'rajz-in';
+    Sk.TurtleGraphics.width = 420;
+    Sk.TurtleGraphics.height = 420;
+    Sk.misceval.asyncToPromise(function () {
+      return Sk.importMainWithBody('<stdin>', false, codeEl.value, true);
+    }).then(function () {
+      running = false; btn.disabled = false;
+    }, function (err) {
+      running = false; btn.disabled = false;
+      hiba.textContent = magyarHiba(err.toString());
+    });
+  }
+  btn.addEventListener('click', run);
+
+  if (typeof Sk === 'undefined') {
+    rajzIn.innerHTML = '<div class="hint">A Python-futtató nem töltődött be.</div>';
+  } else {
+    btn.disabled = false;
+    run();   // az első minta magától megrajzolódik
+  }
+})();
+</script>
+</body>
+</html>
