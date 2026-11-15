@@ -162,7 +162,52 @@
   .what div { background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; font-size: 15px; color: #d7defa; }
   .what b { color: var(--accent); }
   .sql-ex { margin-top: 12px; }
-  .y11 .demo { margin-top: 14px; }
+  .y11 .demo, .y12 .demo { margin-top: 14px; }
+
+  /* C#-demó: asztali ablak + tesztek */
+  .ablak {
+    border: 1px solid #8a8f9c; border-radius: 8px; overflow: hidden; background: #f3f3f3; color: #1b1b1b;
+    font-family: "Segoe UI", system-ui, sans-serif; font-size: 14px; box-shadow: 0 8px 24px rgba(0,0,0,.4);
+  }
+  .ablak-fej { display: flex; align-items: center; justify-content: space-between; background: #fff; height: 32px; padding-left: 12px; font-size: 12.5px; border-bottom: 1px solid #ddd; }
+  .ablak-gombok { display: flex; height: 100%; }
+  .ablak-gombok span { width: 38px; display: grid; place-items: center; color: #333; }
+  .ablak-gombok span:last-child { background: #e81123; color: #fff; }
+  .ablak-test { padding: 12px 14px 14px; }
+  .ablak-cimke { font-size: 12.5px; color: #444; margin: 0 0 5px; }
+  .jegy-gombok { display: flex; gap: 6px; margin-bottom: 12px; }
+  .win-gomb {
+    font: inherit; font-size: 14px; background: #fdfdfd; color: #1b1b1b; border: 1px solid #c4c4c4;
+    border-bottom-color: #a8a8a8; border-radius: 4px; padding: 5px 12px; cursor: pointer;
+  }
+  .win-gomb:hover { background: #eef4fc; border-color: #4da3ff; }
+  .win-gomb:active { background: #d9e8fa; }
+  .jegy-gombok .win-gomb { flex: 1; padding: 6px 0; font-weight: 600; }
+  .lista { background: #fff; border: 1px solid #b9b9b9; height: 112px; overflow-y: auto; padding: 2px 0; }
+  .lista div { padding: 2px 8px; font-size: 13.5px; }
+  .lista div:last-child { background: #cce4f7; }
+  .lista .ures { color: #888; background: none !important; }
+  .ablak-also { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
+  .atlag { font-size: 18px; }
+  .atlag b { font-variant-numeric: tabular-nums; }
+  .atlag.rossz b { color: #c42b1c; }
+  .box h3.kozte { margin-top: 16px; }
+  .y12 .run { background: var(--c12); color: #04182e; }
+  .hibakapcs { display: flex; align-items: center; gap: 8px; margin: 12px 0; font-size: 14.5px; cursor: pointer; }
+  .hibakapcs input { width: 18px; height: 18px; accent-color: #ff6b6b; }
+  button.run.teszt-gomb { width: 100%; padding: 12px 0; }
+  .tesztek { list-style: none; margin: 12px 0 0; padding: 0; font: 13px/1.4 ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+  .tesztek li { display: grid; grid-template-columns: 22px 1fr; gap: 4px; padding: 6px 4px; border-top: 1px solid var(--line); color: #d7defa; }
+  .tesztek .jel { font-weight: 800; color: var(--muted); }
+  .tesztek .ok .jel { color: var(--c10); }
+  .tesztek .bukott .jel { color: #ff6b6b; }
+  .tesztek .fut .jel { animation: villog .5s infinite alternate; }
+  .tesztek .ok, .tesztek .bukott { animation: sorbe .25s both; }
+  .tesztek small { display: block; color: #ff9b9b; font-size: 12px; }
+  @keyframes villog { to { opacity: .2; } }
+  .teszt-osszeg { margin: 10px 0 0; font-weight: 700; min-height: 1.5em; }
+  .teszt-osszeg.ok { color: var(--c10); } .teszt-osszeg.bukott { color: #ff6b6b; }
+  .cs-hiba { background: rgba(255,80,80,.18); outline: 1px solid rgba(255,107,107,.6); border-radius: 3px; }
   .y11 .what + .what, .y11 .demo + .what { margin-top: 22px; }
   .y11 input[type=range] { accent-color: var(--c11); }
 
@@ -368,6 +413,34 @@
       <div><b>Asztali alkalmazás:</b> ablakos program gombokkal és listákkal, mint egy jegyzettömb vagy egy számológép. Az adatokat adatbázisba is el tudod menteni.</div>
       <div><b>Átlátható felépítés:</b> megtanulod, hogyan építs fel egy nagyobb programot úgy, hogy mások is értsék és tudják bővíteni.</div>
       <div><b>Tesztelés:</b> egy másik program automatikusan ellenőrzi, hogy a tiéd jól működik-e. Így a hibát te találod meg, nem a felhasználó.</div>
+    </div>
+    <div class="demo">
+      <div class="box">
+        <h3>Asztali alkalmazás: jegyátlag</h3>
+        <div class="ablak" role="group" aria-label="Jegyátlag alkalmazás">
+          <div class="ablak-fej"><span>Jegyátlag</span><span class="ablak-gombok"><span>&#8211;</span><span>&#9633;</span><span>&#10005;</span></span></div>
+          <div class="ablak-test">
+            <div class="ablak-cimke">Új jegy:</div>
+            <div class="jegy-gombok" id="jegy-gombok"></div>
+            <div class="ablak-cimke">Jegyek:</div>
+            <div class="lista" id="jegy-lista"></div>
+            <div class="ablak-also">
+              <div class="atlag">Átlag: <b id="atlag">–</b></div>
+              <button type="button" class="win-gomb" id="jegy-torol">Törlés</button>
+            </div>
+          </div>
+        </div>
+        <h3 class="kozte">A C#-kód, ami kiszámolja</h3>
+        <pre class="code" id="cs-code"></pre>
+      </div>
+      <div class="box">
+        <h3>Automatikus tesztek (xUnit)</h3>
+        <pre class="code" id="teszt-kod"></pre>
+        <label class="hibakapcs"><input type="checkbox" id="hiba-be"> Tegyünk egy hibát a programba!</label>
+        <button type="button" class="run teszt-gomb" id="teszt-fut">Tesztek futtatása</button>
+        <ul class="tesztek" id="tesztek"></ul>
+        <p class="teszt-osszeg" id="teszt-osszeg"></p>
+      </div>
     </div>
     <div class="chips"><span class="chip">C#</span><span class="chip">Asztali alkalmazás</span><span class="chip">Tesztelés</span></div>
   </section>
@@ -730,6 +803,124 @@
     gombok.appendChild(g);
   });
   futtat(0);
+})();
+
+/* ---------- 12. évfolyam: C# asztali alkalmazás + xUnit-tesztek ---------- */
+(function () {
+  var jegyek = [5, 4];
+  var hibas = false;
+  var gombok = document.getElementById('jegy-gombok');
+  var listaEl = document.getElementById('jegy-lista');
+  var atlagEl = document.getElementById('atlag');
+  var csEl = document.getElementById('cs-code');
+  var tkodEl = document.getElementById('teszt-kod');
+  var hibaBe = document.getElementById('hiba-be');
+  var futGomb = document.getElementById('teszt-fut');
+  var tesztLista = document.getElementById('tesztek');
+  var osszegEl = document.getElementById('teszt-osszeg');
+
+  // ugyanaz a logika, mint a C#-ban; hibás módban egész osztás (C#: int / int)
+  function atlag(lista) {
+    if (lista.length === 0) return 0;
+    var osszeg = lista.reduce(function (a, b) { return a + b; }, 0);
+    return hibas ? Math.trunc(osszeg / lista.length) : osszeg / lista.length;
+  }
+  function hozzaad(lista, jegy) {
+    if (jegy < 1 || jegy > 5) throw new Error('ArgumentException');
+    lista.push(jegy);
+  }
+  function hu(x, tized) { return x.toFixed(tized).replace('.', ','); }
+
+  function K(s) { return '<span class="kw">' + s + '</span>'; }
+  function N(s) { return '<span class="num2">' + s + '</span>'; }
+  function csKod() {
+    var sor = hibas
+      ? '<span class="cs-hiba">    ' + K('return') + ' jegyek.Sum() / jegyek.Count;</span>'
+      : '    ' + K('return') + ' (' + K('double') + ')jegyek.Sum() / jegyek.Count;';
+    csEl.innerHTML =
+      K('public double') + ' Atlag()\n{\n' +
+      '    ' + K('if') + ' (jegyek.Count == ' + N('0') + ') ' + K('return') + ' ' + N('0') + ';\n' +
+      sor + '\n}' +
+      (hibas ? '\n<span class="cm">// hiba: elvész a tizedes rész</span>' : '');
+  }
+  tkodEl.innerHTML =
+    '[' + K('Fact') + ']\n' + K('public void') + ' KetJegyAtlaga()\n{\n' +
+    '    ' + K('var') + ' j = ' + K('new') + ' Jegyek();\n' +
+    '    j.Hozzaad(' + N('4') + ');\n' +
+    '    j.Hozzaad(' + N('5') + ');\n' +
+    '    Assert.Equal(' + N('4.5') + ', j.Atlag());\n}';
+
+  function frissit() {
+    listaEl.innerHTML = jegyek.length
+      ? jegyek.map(function (j, i) { return '<div>' + (i + 1) + '. jegy: ' + j + '</div>'; }).join('')
+      : '<div class="ures">Még nincs jegy.</div>';
+    listaEl.scrollTop = listaEl.scrollHeight;
+    atlagEl.textContent = jegyek.length ? hu(atlag(jegyek), 2) : '–';
+    var helyes = jegyek.length ? jegyek.reduce(function (a, b) { return a + b; }, 0) / jegyek.length : 0;
+    atlagEl.parentNode.classList.toggle('rossz', hibas && Math.abs(helyes - atlag(jegyek)) > 1e-9);
+  }
+  [1, 2, 3, 4, 5].forEach(function (j) {
+    var g = document.createElement('button');
+    g.type = 'button'; g.className = 'win-gomb'; g.textContent = j;
+    g.addEventListener('click', function () { if (jegyek.length < 30) { jegyek.push(j); frissit(); } });
+    gombok.appendChild(g);
+  });
+  document.getElementById('jegy-torol').addEventListener('click', function () { jegyek = []; frissit(); });
+
+  var tesztek = [
+    { nev: 'UresListaAtlagaNulla', fut: function () { return { var: 0, kap: atlag([]) }; } },
+    { nev: 'EgyJegyAtlagaOnmaga', fut: function () { var l = []; hozzaad(l, 5); return { var: 5, kap: atlag(l) }; } },
+    { nev: 'KetJegyAtlaga', fut: function () { var l = []; hozzaad(l, 4); hozzaad(l, 5); return { var: 4.5, kap: atlag(l) }; } },
+    { nev: 'HaromJegyAtlaga', fut: function () { var l = []; hozzaad(l, 5); hozzaad(l, 5); hozzaad(l, 4); return { var: 4.67, kap: +atlag(l).toFixed(2) }; } },
+    { nev: 'HatosJegyetNemFogadEl', fut: function () {
+        try { hozzaad([], 6); return { var: 'ArgumentException', kap: 'nem volt hiba' }; }
+        catch (e) { return { var: 'ArgumentException', kap: 'ArgumentException' }; } } }
+  ];
+
+  function alaphelyzet() {
+    tesztLista.innerHTML = tesztek.map(function (t) {
+      return '<li><span class="jel">·</span><span>' + t.nev + '</span></li>';
+    }).join('');
+    osszegEl.textContent = ''; osszegEl.className = 'teszt-osszeg';
+  }
+
+  var futIdo = null;
+  function futtat() {
+    clearTimeout(futIdo);
+    alaphelyzet();
+    futGomb.disabled = true;
+    var sorok = tesztLista.children, sikeres = 0, i = 0;
+    (function kovetkezo() {
+      if (i > 0) {
+        var t = tesztek[i - 1], e = t.fut(), li = sorok[i - 1];
+        var jo = e.var === e.kap;
+        if (jo) sikeres++;
+        li.className = jo ? 'ok' : 'bukott';
+        li.innerHTML = '<span class="jel">' + (jo ? '✓' : '✗') + '</span><span>' + t.nev +
+          (jo ? '' : '<small>Várt: ' + e.var + ' · Kapott: ' + e.kap + '</small>') + '</span>';
+      }
+      if (i < tesztek.length) {
+        sorok[i].className = 'fut';
+        i++;
+        futIdo = setTimeout(kovetkezo, 380);
+      } else {
+        futGomb.disabled = false;
+        var bukott = tesztek.length - sikeres;
+        osszegEl.className = 'teszt-osszeg ' + (bukott ? 'bukott' : 'ok');
+        osszegEl.textContent = bukott
+          ? bukott + ' teszt elbukott. A hibát a teszt találta meg, nem a felhasználó.'
+          : 'Mind az ' + tesztek.length + ' teszt sikeres.';
+      }
+    })();
+  }
+
+  hibaBe.addEventListener('change', function () {
+    hibas = hibaBe.checked; clearTimeout(futIdo); futGomb.disabled = false;
+    csKod(); frissit(); alaphelyzet();
+  });
+  futGomb.addEventListener('click', futtat);
+
+  csKod(); frissit(); alaphelyzet();
 })();
 </script>
 </body>
