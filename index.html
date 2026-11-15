@@ -162,6 +162,45 @@
   .what div { background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; font-size: 15px; color: #d7defa; }
   .what b { color: var(--accent); }
   .sql-ex { margin-top: 12px; }
+  .y11 .demo { margin-top: 14px; }
+  .y11 .what + .what, .y11 .demo + .what { margin-top: 22px; }
+  .y11 input[type=range] { accent-color: var(--c11); }
+
+  /* JS-demó: tűzijáték */
+  #tuzi { position: relative; border-radius: 10px; overflow: hidden; background: #000; border: 1px solid var(--line); }
+  #tuzi-vaszon { display: block; width: 100%; height: 260px; cursor: pointer; touch-action: manipulation; }
+  #tuzi-tipp {
+    position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); pointer-events: none;
+    font-size: 14px; font-weight: 700; color: #1c1a10; background: var(--c11); padding: 4px 12px;
+    border-radius: 999px; transition: opacity .4s; white-space: nowrap;
+  }
+  #tuzi-tipp.el { opacity: 0; }
+
+  /* SQL-demó */
+  .qbtns { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .qbtns button {
+    font: inherit; font-size: 13.5px; padding: 6px 12px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--panel2); color: var(--text);
+  }
+  .qbtns button.on { background: var(--c11); color: #1c1a10; border-color: transparent; font-weight: 700; }
+  .tabla-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: #070b18; }
+  table.eredm { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  table.eredm th {
+    text-align: left; background: var(--panel2); color: var(--c11); font-weight: 600;
+    padding: 7px 10px; white-space: nowrap; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 12.5px;
+  }
+  table.eredm td { padding: 7px 10px; border-top: 1px solid var(--line); white-space: nowrap; color: #d7defa; }
+  table.eredm .n { text-align: right; font-variant-numeric: tabular-nums; }
+  table.eredm tbody tr { animation: sorbe .35s both; }
+  @keyframes sorbe { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @media (max-width: 560px) {
+    table.eredm { font-size: 12px; }
+    table.eredm th, table.eredm td { padding: 6px 5px; }
+    table.eredm th:first-child, table.eredm td:first-child { padding-left: 8px; }
+    table.eredm td:first-child { white-space: normal; }
+    table.eredm th { font-family: inherit; font-size: 12px; }
+  }
+  .sql-info { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
   /* étterem-hasonlat */
   .resto { display: flex; align-items: stretch; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
   .resto .node { flex: 1 1 150px; border-radius: 12px; padding: 12px; text-align: center; border: 1px solid var(--line); background: var(--panel2); font-size: 14px; color: #d7defa; }
@@ -278,8 +317,40 @@
     </div>
     <div class="what">
       <div><b>JavaScript:</b> ettől lesz a weboldal élő. Ez teszi lehetővé, hogy a gomb kattintásra csináljon valamit, vagy mozogjon az animáció. A fenti csúszkák is ezzel működnek.</div>
+    </div>
+    <div class="demo">
+      <div class="box">
+        <h3>JavaScript: tűzijáték</h3>
+        <div id="tuzi">
+          <canvas id="tuzi-vaszon" aria-label="Tűzijáték: koppints a képre"></canvas>
+          <div id="tuzi-tipp">Koppints a képre!</div>
+        </div>
+        <div class="ctrl"><label for="s-db">Darab</label><input id="s-db" type="range" min="10" max="200" value="60"><output id="o-db">60</output></div>
+        <div class="ctrl"><label for="s-gr">Gravitáció</label><input id="s-gr" type="range" min="0" max="20" value="6"><output id="o-gr">0.06</output></div>
+      </div>
+      <div class="box">
+        <h3>A JavaScript-kód mögötte</h3>
+        <pre class="code" id="js-code"></pre>
+        <p class="tip">Minden koppintás egy <b>click</b> esemény. A program ilyenkor szikrákat hoz létre, és másodpercenként 60-szor újrarajzolja őket.</p>
+      </div>
+    </div>
+
+    <div class="what">
       <div><b>Adatbázis:</b> rendezett tároló, amiben több ezer adat elfér, például egy webshop összes terméke.</div>
       <div><b>SQL:</b> az a nyelv, amivel az adatbázistól kérdezel, például: <i>"Mutasd az összes 10 000 Ft alatti terméket!"</i></div>
+    </div>
+    <div class="demo">
+      <div class="box">
+        <h3>Válassz egy kérdést</h3>
+        <div class="qbtns" id="sql-gombok"></div>
+        <h3>Az SQL-lekérdezés</h3>
+        <pre class="code" id="sql-code"></pre>
+      </div>
+      <div class="box">
+        <h3>Az adatbázis válasza</h3>
+        <div class="tabla-wrap"><table class="eredm" id="sql-tabla"></table></div>
+        <p class="sql-info" id="sql-info"></p>
+      </div>
     </div>
     <div class="chips"><span class="chip">JavaScript</span><span class="chip">Adatbázis</span><span class="chip">SQL</span></div>
   </section>
@@ -460,6 +531,205 @@
     btn.disabled = false;
     run();   // az első minta magától megrajzolódik
   }
+})();
+
+/* ---------- 11. évfolyam: JavaScript-tűzijáték ---------- */
+(function () {
+  var vaszon = document.getElementById('tuzi-vaszon');
+  var ctx = vaszon.getContext('2d');
+  var tipp = document.getElementById('tuzi-tipp');
+  var sDb = document.getElementById('s-db'), oDb = document.getElementById('o-db');
+  var sGr = document.getElementById('s-gr'), oGr = document.getElementById('o-gr');
+  var codeEl = document.getElementById('js-code');
+  var reszecskek = [];
+  var darab = 60, gravitacio = 0.06;
+  var W = 0, H = 0, latszik = false, fut = false, utolsoKoppintas = 0, utolsoAuto = 0;
+
+  function meretez() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = vaszon.clientWidth; H = vaszon.clientHeight;
+    vaszon.width = W * dpr; vaszon.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H);
+  }
+  window.addEventListener('resize', meretez);
+  meretez();
+
+  function kodFrissit() {
+    codeEl.innerHTML =
+      '<span class="kw">let</span> darab = <span class="num2">' + darab + '</span>;\n' +
+      '<span class="kw">let</span> gravitacio = <span class="num2">' + gravitacio.toFixed(2) + '</span>;\n\n' +
+      'vaszon.<span class="kw">addEventListener</span>(<span class="str">"click"</span>, (e) => {\n' +
+      '  <span class="kw">const</span> szin = Math.random() * <span class="num2">360</span>;\n' +
+      '  <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num2">0</span>; i &lt; darab; i++) {\n' +
+      '    <span class="kw">const</span> irany = Math.random() * <span class="num2">2</span> * Math.PI;\n' +
+      '    <span class="kw">const</span> seb = Math.random() * <span class="num2">4</span> + <span class="num2">1</span>;\n' +
+      '    szikrak.push({\n' +
+      '      x: e.offsetX, y: e.offsetY,\n' +
+      '      vx: Math.cos(irany) * seb,\n' +
+      '      vy: Math.sin(irany) * seb,\n' +
+      '      szin: <span class="str">`hsl(${szin} 90% 60%)`</span>\n' +
+      '    });\n' +
+      '  }\n' +
+      '});\n\n' +
+      '<span class="cm">// minden képkockában:</span>\n' +
+      '<span class="kw">for</span> (<span class="kw">const</span> s <span class="kw">of</span> szikrak) {\n' +
+      '  s.x += s.vx;\n' +
+      '  s.y += s.vy;\n' +
+      '  s.vy += gravitacio;  <span class="cm">// lefelé húzza</span>\n' +
+      '}';
+  }
+
+  function robbanas(x, y) {
+    var szin = Math.random() * 360;
+    for (var i = 0; i < darab; i++) {
+      var irany = Math.random() * 2 * Math.PI;
+      var seb = Math.random() * 4 + 1;
+      reszecskek.push({
+        x: x, y: y, vx: Math.cos(irany) * seb, vy: Math.sin(irany) * seb,
+        szin: 'hsl(' + (szin + Math.random() * 40 - 20) + ' 90% 60%)', elet: 1
+      });
+    }
+    if (reszecskek.length > 1500) reszecskek.splice(0, reszecskek.length - 1500);
+    indit();
+  }
+
+  function kocka(ido) {
+    // ha senki nem koppint, magától is lő néha
+    if (latszik && ido - utolsoKoppintas > 3000 && ido - utolsoAuto > 1300) {
+      utolsoAuto = ido;
+      robbanas(W * (0.2 + Math.random() * 0.6), H * (0.25 + Math.random() * 0.35));
+    }
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = 'rgba(0,0,0,0.22)';
+    ctx.fillRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'lighter';
+    for (var i = reszecskek.length - 1; i >= 0; i--) {
+      var s = reszecskek[i];
+      s.x += s.vx; s.y += s.vy;
+      s.vy += gravitacio; s.vx *= 0.985; s.vy *= 0.985;
+      s.elet -= 0.012;
+      if (s.elet <= 0 || s.y > H + 10) { reszecskek.splice(i, 1); continue; }
+      ctx.globalAlpha = s.elet;
+      ctx.fillStyle = s.szin;
+      ctx.beginPath(); ctx.arc(s.x, s.y, 2.2, 0, 6.2832); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    if (latszik || reszecskek.length) requestAnimationFrame(kocka);
+    else fut = false;
+  }
+  function indit() { if (!fut) { fut = true; requestAnimationFrame(kocka); } }
+
+  vaszon.addEventListener('click', function (e) {
+    var r = vaszon.getBoundingClientRect();
+    utolsoKoppintas = performance.now();
+    tipp.classList.add('el');
+    robbanas(e.clientX - r.left, e.clientY - r.top);
+  });
+
+  sDb.addEventListener('input', function () { darab = +sDb.value; oDb.textContent = darab; kodFrissit(); });
+  sGr.addEventListener('input', function () {
+    gravitacio = sGr.value / 100; oGr.textContent = gravitacio.toFixed(2); kodFrissit();
+  });
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (bej) {
+      latszik = bej[0].isIntersecting;
+      if (latszik) indit();
+    }).observe(vaszon);
+  } else { latszik = true; indit(); }
+
+  kodFrissit();
+})();
+
+/* ---------- 11. évfolyam: SQL-demó ---------- */
+(function () {
+  var termekek = [
+    { nev: 'Gamer egér',          kategoria: 'Gamer', ar: 12990, ertekeles: 4.7 },
+    { nev: 'Billentyűzet', kategoria: 'Gamer', ar: 24990, ertekeles: 4.8 },
+    { nev: 'Kontroller',          kategoria: 'Gamer', ar: 18990, ertekeles: 4.5 },
+    { nev: 'Irodai egér',         kategoria: 'Iroda', ar: 4990,  ertekeles: 4.1 },
+    { nev: 'Webkamera',           kategoria: 'Iroda', ar: 9990,  ertekeles: 4.0 },
+    { nev: 'Monitor',             kategoria: 'Iroda', ar: 49990, ertekeles: 4.6 },
+    { nev: 'Fülhallgató',         kategoria: 'Hang',  ar: 7990,  ertekeles: 4.3 },
+    { nev: 'Mikrofon',            kategoria: 'Hang',  ar: 15990, ertekeles: 4.4 },
+    { nev: 'Hangszóró',           kategoria: 'Hang',  ar: 11990, ertekeles: 4.2 }
+  ];
+  function K(s) { return '<span class="kw">' + s + '</span>'; }
+  function N(s) { return '<span class="num2">' + s + '</span>'; }
+  function S(s) { return '<span class="str">' + s + '</span>'; }
+  function oszlopok(sorok, nevek) {
+    return sorok.map(function (t) { var o = {}; nevek.forEach(function (n) { o[n] = t[n]; }); return o; });
+  }
+
+  var kerdesek = [
+    { cimke: 'Minden termék',
+      sql: K('SELECT') + ' *\n' + K('FROM') + ' termekek;',
+      fut: function () { return termekek.slice(); } },
+    { cimke: '10 000 Ft alatt',
+      sql: K('SELECT') + ' nev, ar\n' + K('FROM') + ' termekek\n' + K('WHERE') + ' ar &lt; ' + N('10000') + ';',
+      fut: function () { return oszlopok(termekek.filter(function (t) { return t.ar < 10000; }), ['nev', 'ar']); } },
+    { cimke: 'Csak a gamer termékek',
+      sql: K('SELECT') + ' nev, ar, ertekeles\n' + K('FROM') + ' termekek\n' + K('WHERE') + ' kategoria = ' + S("'Gamer'") + ';',
+      fut: function () { return oszlopok(termekek.filter(function (t) { return t.kategoria === 'Gamer'; }), ['nev', 'ar', 'ertekeles']); } },
+    { cimke: 'A 3 legjobbra értékelt',
+      sql: K('SELECT') + ' nev, ertekeles\n' + K('FROM') + ' termekek\n' + K('ORDER BY') + ' ertekeles ' + K('DESC') + '\n' + K('LIMIT') + ' ' + N('3') + ';',
+      fut: function () {
+        return oszlopok(termekek.slice().sort(function (a, b) { return b.ertekeles - a.ertekeles; }).slice(0, 3), ['nev', 'ertekeles']);
+      } },
+    { cimke: 'Átlagár kategóriánként',
+      sql: K('SELECT') + ' kategoria,\n       ' + K('COUNT') + '(*) ' + K('AS') + ' db,\n       ' + K('AVG') + '(ar) ' + K('AS') + ' atlagar\n' +
+           K('FROM') + ' termekek\n' + K('GROUP BY') + ' kategoria;',
+      fut: function () {
+        var cs = {};
+        termekek.forEach(function (t) {
+          (cs[t.kategoria] = cs[t.kategoria] || { kategoria: t.kategoria, db: 0, osszeg: 0 });
+          cs[t.kategoria].db++; cs[t.kategoria].osszeg += t.ar;
+        });
+        return Object.keys(cs).map(function (k) {
+          return { kategoria: k, db: cs[k].db, atlagar: Math.round(cs[k].osszeg / cs[k].db) };
+        });
+      } }
+  ];
+
+  var gombok = document.getElementById('sql-gombok');
+  var codeEl = document.getElementById('sql-code');
+  var tabla = document.getElementById('sql-tabla');
+  var info = document.getElementById('sql-info');
+
+  function ft(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); }
+  function cella(kulcs, ertek) {
+    if (typeof ertek !== 'number') return '<td>' + ertek + '</td>';
+    var szoveg = (kulcs === 'ar' || kulcs === 'atlagar') ? ft(ertek) + ' Ft'
+               : kulcs === 'ertekeles' ? ertek.toFixed(1) : ertek;
+    return '<td class="n">' + szoveg + '</td>';
+  }
+
+  function futtat(i) {
+    var k = kerdesek[i];
+    Array.prototype.forEach.call(gombok.children, function (g, j) { g.classList.toggle('on', i === j); });
+    codeEl.innerHTML = k.sql;
+    var sorok = k.fut();
+    var nevek = Object.keys(sorok[0]);
+    var html = '<thead><tr>' + nevek.map(function (n) {
+      var szam = typeof sorok[0][n] === 'number';
+      return '<th' + (szam ? ' class="n"' : '') + '>' + n + '</th>';
+    }).join('') + '</tr></thead><tbody>';
+    sorok.forEach(function (s, idx) {
+      html += '<tr style="animation-delay:' + idx * 60 + 'ms">' +
+        nevek.map(function (n) { return cella(n, s[n]); }).join('') + '</tr>';
+    });
+    tabla.innerHTML = html + '</tbody>';
+    info.textContent = sorok.length + ' sor a ' + termekek.length + ' termékből';
+  }
+
+  kerdesek.forEach(function (k, i) {
+    var g = document.createElement('button');
+    g.type = 'button'; g.textContent = k.cimke;
+    g.addEventListener('click', function () { futtat(i); });
+    gombok.appendChild(g);
+  });
+  futtat(0);
 })();
 </script>
 </body>
