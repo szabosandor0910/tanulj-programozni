@@ -255,6 +255,15 @@
   .resto .arrow { display: grid; place-items: center; color: var(--muted); font-size: 22px; flex: 0 0 auto; }
   @media (max-width: 560px) { .resto { flex-direction: column; } .resto .node { flex: none; } .resto .arrow { transform: none; font-size: 20px; } }
 
+  .remek-link {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px;
+    padding: 14px 16px; border-radius: 14px; text-decoration: none; color: var(--text);
+    background: linear-gradient(135deg, #2a1846, var(--panel2)); border: 1px solid #5b3a80; transition: transform .15s, border-color .15s;
+  }
+  .remek-link:hover { transform: translateY(-2px); border-color: var(--c13); }
+  .remek-link b { display: block; color: var(--c13); font-size: 16px; }
+  .remek-link span { font-size: 14px; color: #cfd7f7; }
+  .remek-link .nyil { font-size: 24px; color: var(--c13); flex: 0 0 auto; }
   footer { margin-top: 36px; padding: 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); color: var(--muted); font-size: 15px; }
   footer b { color: var(--text); }
   footer .made { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
@@ -465,6 +474,10 @@
       <div class="node"><b>Backend</b>a szerveren fut, kezeli az adatbázist</div>
     </div>
     <div class="chips"><span class="chip">Frontend</span><span class="chip">Backend</span><span class="chip">REST API</span><span class="chip">Saját projekt</span></div>
+    <a class="remek-link" href="vizsgaremek.html" target="_blank" rel="noopener">
+      <span><b>Nézd meg egy vizsgaremek mintáját</b>Így néz ki egy projekt, amit a 13. évfolyam végén csapatban készítetek.</span>
+      <span class="nyil">→</span>
+    </a>
   </section>
 
   <footer>
