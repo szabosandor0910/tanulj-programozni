@@ -163,6 +163,8 @@
   .what b { color: var(--accent); }
   .sql-ex { margin-top: 12px; }
   .y11 .demo, .y12 .demo { margin-top: 14px; }
+  .demo.egy { grid-template-columns: 1fr; }
+  .demo.egy #tuzi-vaszon { height: 300px; }
 
   /* C#-demó: asztali ablak + tesztek */
   .ablak {
@@ -363,7 +365,7 @@
     <div class="what">
       <div><b>JavaScript:</b> ettől lesz a weboldal élő. Ez teszi lehetővé, hogy a gomb kattintásra csináljon valamit, vagy mozogjon az animáció. A fenti csúszkák is ezzel működnek.</div>
     </div>
-    <div class="demo">
+    <div class="demo egy">
       <div class="box">
         <h3>JavaScript: tűzijáték</h3>
         <div id="tuzi">
@@ -372,11 +374,7 @@
         </div>
         <div class="ctrl"><label for="s-db">Darab</label><input id="s-db" type="range" min="10" max="200" value="60"><output id="o-db">60</output></div>
         <div class="ctrl"><label for="s-gr">Gravitáció</label><input id="s-gr" type="range" min="0" max="20" value="6"><output id="o-gr">0.06</output></div>
-      </div>
-      <div class="box">
-        <h3>A JavaScript-kód mögötte</h3>
-        <pre class="code" id="js-code"></pre>
-        <p class="tip">Minden koppintás egy <b>click</b> esemény. A program ilyenkor szikrákat hoz létre, és másodpercenként 60-szor újrarajzolja őket.</p>
+        <p class="tip">Minden koppintásra a program szikrákat hoz létre, és másodpercenként 60-szor újrarajzolja őket. A csúszkákkal a szikrák számát és a gravitációt állíthatod.</p>
       </div>
     </div>
 
@@ -613,7 +611,6 @@
   var tipp = document.getElementById('tuzi-tipp');
   var sDb = document.getElementById('s-db'), oDb = document.getElementById('o-db');
   var sGr = document.getElementById('s-gr'), oGr = document.getElementById('o-gr');
-  var codeEl = document.getElementById('js-code');
   var reszecskek = [];
   var darab = 60, gravitacio = 0.06;
   var W = 0, H = 0, latszik = false, fut = false, utolsoKoppintas = 0, utolsoAuto = 0;
@@ -628,30 +625,6 @@
   window.addEventListener('resize', meretez);
   meretez();
 
-  function kodFrissit() {
-    codeEl.innerHTML =
-      '<span class="kw">let</span> darab = <span class="num2">' + darab + '</span>;\n' +
-      '<span class="kw">let</span> gravitacio = <span class="num2">' + gravitacio.toFixed(2) + '</span>;\n\n' +
-      'vaszon.<span class="kw">addEventListener</span>(<span class="str">"click"</span>, (e) => {\n' +
-      '  <span class="kw">const</span> szin = Math.random() * <span class="num2">360</span>;\n' +
-      '  <span class="kw">for</span> (<span class="kw">let</span> i = <span class="num2">0</span>; i &lt; darab; i++) {\n' +
-      '    <span class="kw">const</span> irany = Math.random() * <span class="num2">2</span> * Math.PI;\n' +
-      '    <span class="kw">const</span> seb = Math.random() * <span class="num2">4</span> + <span class="num2">1</span>;\n' +
-      '    szikrak.push({\n' +
-      '      x: e.offsetX, y: e.offsetY,\n' +
-      '      vx: Math.cos(irany) * seb,\n' +
-      '      vy: Math.sin(irany) * seb,\n' +
-      '      szin: <span class="str">`hsl(${szin} 90% 60%)`</span>\n' +
-      '    });\n' +
-      '  }\n' +
-      '});\n\n' +
-      '<span class="cm">// minden képkockában:</span>\n' +
-      '<span class="kw">for</span> (<span class="kw">const</span> s <span class="kw">of</span> szikrak) {\n' +
-      '  s.x += s.vx;\n' +
-      '  s.y += s.vy;\n' +
-      '  s.vy += gravitacio;  <span class="cm">// lefelé húzza</span>\n' +
-      '}';
-  }
 
   function robbanas(x, y) {
     var szin = Math.random() * 360;
@@ -700,9 +673,9 @@
     robbanas(e.clientX - r.left, e.clientY - r.top);
   });
 
-  sDb.addEventListener('input', function () { darab = +sDb.value; oDb.textContent = darab; kodFrissit(); });
+  sDb.addEventListener('input', function () { darab = +sDb.value; oDb.textContent = darab; });
   sGr.addEventListener('input', function () {
-    gravitacio = sGr.value / 100; oGr.textContent = gravitacio.toFixed(2); kodFrissit();
+    gravitacio = sGr.value / 100; oGr.textContent = gravitacio.toFixed(2);
   });
 
   if ('IntersectionObserver' in window) {
@@ -712,7 +685,6 @@
     }).observe(vaszon);
   } else { latszik = true; indit(); }
 
-  kodFrissit();
 })();
 
 /* ---------- 11. évfolyam: SQL-demó ---------- */
