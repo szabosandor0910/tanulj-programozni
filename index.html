@@ -264,6 +264,24 @@
   .remek-link b { display: block; color: var(--c13); font-size: 16px; }
   .remek-link span { font-size: 14px; color: #cfd7f7; }
   .remek-link .nyil { font-size: 24px; color: var(--c13); flex: 0 0 auto; }
+  .nepszeru { margin-top: 36px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+  .nepszeru h2 { font-size: 24px; }
+  .nepszeru .sub { margin-top: 6px; }
+  .top10 { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 6px; }
+  .top10 li {
+    display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 10px;
+    padding: 9px 14px; border-radius: 10px; background: #0e1429; border: 1px solid var(--line); color: var(--muted);
+  }
+  .top10 .hely { font-weight: 800; font-variant-numeric: tabular-nums; }
+  .top10 .nyelv { font-size: 16px; }
+  .top10 li.tanit { background: linear-gradient(90deg, #1d2a1f, var(--panel2)); border-color: #2f6b4c; color: var(--text); }
+  .top10 li.tanit .hely { color: var(--c10); }
+  .top10 li.tanit .nyelv { font-weight: 700; }
+  .top10 .evf { font-size: 12.5px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--c10); color: #06281b; white-space: nowrap; }
+  .forras { margin: 14px 0 0; font-size: 13.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; justify-content: space-between; }
+  .forras a { color: var(--c12); }
+  .jelmagy { display: inline-flex; align-items: center; gap: 6px; }
+  .jelmagy i { width: 12px; height: 12px; border-radius: 3px; background: var(--c10); display: inline-block; }
   footer { margin-top: 36px; padding: 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); color: var(--muted); font-size: 15px; }
   footer b { color: var(--text); }
   footer .made { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
@@ -478,6 +496,25 @@
       <span><b>Nézd meg egy vizsgaremek mintáját</b>Így néz ki egy projekt, amit a 13. évfolyam végén csapatban készítetek.</span>
       <span class="nyil">→</span>
     </a>
+  </section>
+
+  <!-- Népszerű nyelvek -->
+  <section class="nepszeru">
+    <h2>A világ legnépszerűbb nyelveit tanítjuk</h2>
+    <p class="sub">A programozók nagy nemzetközi felmérése szerint ez a 10 leggyakrabban használt programozási nyelv. Az első négyet mind tanítjuk, és a C# is ott van a listán.</p>
+    <ol class="top10">
+      <li class="tanit"><span class="hely">#1</span><span class="nyelv">JavaScript</span><span class="evf">11. évf.</span></li>
+      <li class="tanit"><span class="hely">#2</span><span class="nyelv">SQL</span><span class="evf">11. évf.</span></li>
+      <li class="tanit"><span class="hely">#3</span><span class="nyelv">HTML/CSS</span><span class="evf">9. évf.</span></li>
+      <li class="tanit"><span class="hely">#4</span><span class="nyelv">Python</span><span class="evf">10. évf.</span></li>
+      <li><span class="hely">#5</span><span class="nyelv">Bash/Shell</span></li>
+      <li><span class="hely">#6</span><span class="nyelv">TypeScript</span></li>
+      <li><span class="hely">#7</span><span class="nyelv">Java</span></li>
+      <li class="tanit"><span class="hely">#8</span><span class="nyelv">C#</span><span class="evf">12. évf.</span></li>
+      <li><span class="hely">#9</span><span class="nyelv">PowerShell</span></li>
+      <li><span class="hely">#10</span><span class="nyelv">C++</span></li>
+    </ol>
+    <p class="forras"><span>Forrás: <a href="https://survey.stackoverflow.co/2026/technology" target="_blank" rel="noopener">Stack Overflow Developer Survey 2026</a> (a leggyakrabban használt nyelvek)</span> <span class="jelmagy"><i></i> nálunk tanulod</span></p>
   </section>
 
   <footer>
